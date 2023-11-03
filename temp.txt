@@ -1,0 +1,249 @@
+// const fetch = require("node-fetch");
+
+// async function main() {
+//   const response = await fetch("http://localhost:3000/todos?user_id=2");
+//   const data = await response.json();
+
+//   const response1 = await fetch("http://localhost:3000/users");
+//   const data1 = await response1.json();
+
+  
+//   async function fetchUserTodos() {
+//     let startid = 1, chunk = 5;
+//     let limit = startid + chunk;
+//     const arr = [];
+//     while(startid <= endid) {
+//       const response2 = await fetch(`http://localhost:3000/todos?user_id=${startid}`);
+//       const data2 = await response2.json();
+//       // console.log(data2);
+//       startid++;
+//     }
+//   }
+  
+//   // console.log(data1);
+//   let endid = data1.users.length;
+//   console.log(data1.users.length);
+//   fetchUserTodos();
+  
+//   // console.log(endid);
+  
+// }
+// main();
+
+// write your code here
+
+
+// const fetch = require('node-fetch');
+
+// async function fetchTodosForUsers(startUserId, endUserId) {
+//     const todosPromises = [];
+
+//     for (let userId = startUserId; userId <= endUserId; userId++) {
+//       const response = await fetch(`http://localhost:3000/todos?user_id=${userId}`);
+//       const todosData = await response.json();
+//       todosPromises.push(todosData);
+//     }
+//     return Promise.all(todosPromises);
+// }
+
+// async function main() {
+//     const usersResponse = await fetch('http://localhost:3000/users');
+//     const usersData = await usersResponse.json();
+//     const users = usersData.users;
+
+//     const todosData = [];
+//     let startUserId = 1;
+//     const chunkSize = 5;
+
+//     while (startUserId <= users.length) {
+//         const endUserId = Math.min(startUserId + chunkSize - 1, users.length);
+//         const chunkTodos = await fetchTodosForUsers(startUserId, endUserId);
+//         todosData.push(...chunkTodos);
+//         startUserId = endUserId + 1;
+        
+//         if (startUserId <= users.length) {
+//             await new Promise(resolve => setTimeout(resolve, 1000));
+//         }
+//     }
+//     // console.log(todosData);
+
+//     const userTodosCompleted = todosData.map((todos, index) => ({
+//         id: users[index].id,
+//         name: users[index].name
+//         // numTodosCompleted: todos.filter(todo => todo.isCompleted).length
+//     }));
+//     // console.log(todosData);
+
+//     console.log(userTodosCompleted);
+// }
+
+// main();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const fetch = require('node-fetch');
+
+// async function fetchTodosForUser(userId) {
+//     const response = await fetch(`http://localhost:3000/todos?user_id=${userId}`);
+//     const todosData = await response.json();
+//     return todosData;
+// }
+
+// async function fetchUserTodos(users) {
+//     const userTodosPromises = users.map(async (user) => {
+//         const todosData = await fetchTodosForUser(user.id);
+//         console.log(todosData);
+//         // const temp = (Object.entries(todosData));
+//         // console.log(todosData.todos);
+//         return {
+//             id: user.id,
+//             name: user.name,
+//             numTodosCompleted: (todosData.todos.filter((todo) =>  todo.isCompleted === true).length)
+//         };
+//     });
+
+//     return Promise.all(userTodosPromises);
+// }
+
+// async function main() {
+//     const usersResponse = await fetch('http://localhost:3000/users');
+//     const usersData = await usersResponse.json();
+//     const users = usersData.users;
+
+//     const userTodosCompleted = await fetchUserTodos(users);
+//     console.log(userTodosCompleted);
+// }
+
+// main();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// review 2
+
+
+// const fetch = require("node-fetch");
+
+
+// const arr = [];
+
+// async function fetchByValue(size) {
+//   for(i=0; i<size; i++) {
+//     const row = [];
+//     const temp = [];
+//     for(j=0; j<size; j++) {
+//       const temp = await fetch(`http://localhost:3000/value?rowIndex=${i}&colIndex=${j}`).then((res) => res.json());
+
+//       // const col = fetch(`http://localhost:3000/value?rowIndex=${i+1}&colIndex=${j}`).then((res) => res.json());
+//       // console.log(data);
+//       // arr1 = await Promise.all([row, col]);
+//       // console.log((arr1[1]));
+//       // console.log(arr1);
+      
+
+//       // const temp = arr1.json();
+//         // const temp = Object.values(t);
+//         // temp.push(Object.values(arr1[0]));
+//         // temp.push(Object.values(arr1[1]));
+
+//         row.push(Object.values(temp));
+//       }
+//      arr.push(row);
+//   }
+//   console.log(arr);
+
+// }
+
+
+// async function main() {
+//   const response1 = await fetch("http://localhost:3000/initialize");
+//   const data1 = await response1.json();
+
+//   await fetchByValue(data1.size)
+//   // console.log(arr);
+//   // console.log(data1.size);
+  
+// }
+
+// main();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// review 3
+
+const fetch = require("node-fetch");
+
+async function main() {
+  const response = await fetch("http://localhost:3001/");
+  const data = await response.json();
+  // const temp = Objects.entries(data);
+  // console.log(temp);
+  const response1 = await fetch(`http://localhost:3001/dir2`);
+  const data1 = await response1.json();
+
+  // const temp = Object.entries(data.items[0]);
+  const data2 = data.items.filter((x) => {
+    return (x.isDir === true)
+  });
+  const files = [];
+  const response3 = await Promise.all(data2.map(async (x) => { 
+     await fetch(`http://localhost:3001/${x.name}`)
+    // .then((res) => files.push(res.json()));
+  }));
+  const [r1, r2] = response3;
+  console.log(response3);
+  // const data3 = await r1.json();
+  // const data4 = await r2.json();
+  // console.log(data3);
+  // console.log(data4);
+}
+main();
+
